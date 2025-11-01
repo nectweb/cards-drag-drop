@@ -22,8 +22,8 @@ export default function Home() {
       i: "a",
       x: 0,
       y: 0,
-      w: 1,
-      h: 2,
+      w: 0.933,
+      h: 1.66,
       img: "github.png",
       name: "Github",
       url: "https://github.com/dbrito1992",
@@ -33,8 +33,8 @@ export default function Home() {
       i: "b",
       x: 1,
       y: 0,
-      w: 1,
-      h: 2,
+      w: 0.933,
+      h: 1.66,
       img: "facebook.jpg",
       name: "Facebook",
       url: "https://facebook.com/nectweb",
@@ -44,8 +44,8 @@ export default function Home() {
       i: "c",
       x: 2,
       y: 0,
-      w: 1,
-      h: 2,
+      w: 0.933,
+      h: 1.66,
       img: "instagram.jpg",
       name: "Instagram",
       url: "https://instagram.com/nectweb",
@@ -55,8 +55,8 @@ export default function Home() {
       i: "d",
       x: 3,
       y: 0,
-      w: 1,
-      h: 2,
+      w: 0.933,
+      h: 1.66,
       img: "youtube.jpg",
       name: "Youtube",
       url: "https://youtube.com/@nectweb",
@@ -66,8 +66,8 @@ export default function Home() {
       i: "e",
       x: 0,
       y: 2,
-      w: 1,
-      h: 2,
+      w: 0.933,
+      h: 1.66,
       img: "xcom.jpg",
       name: "X.com",
       url: "https://x.com/nectweb",
@@ -77,8 +77,8 @@ export default function Home() {
       i: "f",
       x: 1,
       y: 2,
-      w: 1,
-      h: 2,
+      w: 0.933,
+      h: 1.66,
       img: "next-js.svg",
       name: "Next.js",
       url: "https://nextjs.org",
@@ -126,7 +126,7 @@ export default function Home() {
       layout={layout}
       margin={[24, 34]}
       cols={4}
-      rowHeight={94}
+      rowHeight={100}
       isResizable={false}
       width={924}
       isDraggable={true}
@@ -161,13 +161,13 @@ export default function Home() {
               <button
                 style={
                   {
-                    "--sizeW": "10px",
-                    "--sizeH": "10px",
+                    "--sizeW": "15px",
+                    "--sizeH": "15px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 1, 2)}
+                onClick={() => handleSize(itens.i, 0.933, 1.66)}
               >
-                1X2
+                188X188
               </button>
             </div>
             <div className="btn-size">
@@ -178,22 +178,22 @@ export default function Home() {
                     "--sizeH": "25px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 1, 4)}
+                onClick={() => handleSize(itens.i, 0.933, 3.24)}
               >
-                1X4
+                188X400
               </button>
             </div>
             <div className="btn-size">
               <button
                 style={
                   {
-                    "--sizeW": "20px",
+                    "--sizeW": "40px",
                     "--sizeH": "20px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 2, 2)}
+                onClick={() => handleSize(itens.i, 1.886, 1.66)}
               >
-                2X2
+                400x188
               </button>
             </div>
             <div className="btn-size">
@@ -204,9 +204,9 @@ export default function Home() {
                     "--sizeH": "25px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 4, 4)}
+                onClick={() => handleSize(itens.i, 1.886, 3.24)}
               >
-                4X4
+                400X400
               </button>
             </div>
             <div className="btn-size">
@@ -217,7 +217,7 @@ export default function Home() {
                     "--sizeH": "10px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 4, 2)}
+                onClick={() => handleSize(itens.i, 1.886, 0.82)}
               >
                 4X2
               </button>
