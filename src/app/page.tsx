@@ -101,7 +101,7 @@ export default function Home() {
     setLayout((prev) => prev.filter((item) => item.i !== id));
   };
 
-   const handleDrag = (layout: MyLayout[], oldItem: Layout, newItem: Layout) => {
+   const handleDrag = (layout: Layout[], oldItem: Layout, newItem: Layout) => {
     if (lastX.current !== null) {
       if (newItem.x > lastX.current) {
         console.log(`${newItem.i} movendo para a direita`);
