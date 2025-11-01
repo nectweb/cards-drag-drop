@@ -46,7 +46,6 @@ body {
   cursor: grab;
   gap: 10px;
   flex-wrap: wrap;
-  z-index: 10;
 }
 
 .cards img{
@@ -86,14 +85,13 @@ body {
   left: 50%;
   transform: translate(-50%, 0);
   background-color: #000;
-  width: 90%;
+  width: 95%;
   max-width: 200px;
   border-radius: 10px;
   padding: 10px;
-  z-index: 20;
   opacity: 0;
   transition: 0.4s all;
-  gap: 10px;
+  gap: 7px;
 }
 
 .cards:hover .size-container .btn-size{
@@ -139,7 +137,6 @@ body {
   border-radius: 50%;
   cursor: pointer;
   padding: 10px;
-  z-index: 20;
   opacity: 0;
   transition: 0.4s all;
   gap: 10px;

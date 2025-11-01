@@ -124,7 +124,7 @@ export default function Home() {
     <GridLayout
       className="layout"
       layout={layout}
-      margin={[24, 34]}
+      margin={[34, 34]}
       cols={4}
       rowHeight={100}
       isResizable={false}
@@ -175,7 +175,7 @@ export default function Home() {
                 style={
                   {
                     "--sizeW": "10px",
-                    "--sizeH": "25px",
+                    "--sizeH": "20px",
                   } as React.CSSProperties
                 }
                 onClick={() => handleSize(itens.i, 0.933, 3.24)}
@@ -187,7 +187,7 @@ export default function Home() {
               <button
                 style={
                   {
-                    "--sizeW": "40px",
+                    "--sizeW": "35px",
                     "--sizeH": "20px",
                   } as React.CSSProperties
                 }
@@ -213,7 +213,7 @@ export default function Home() {
               <button
                 style={
                   {
-                    "--sizeW": "30px",
+                    "--sizeW": "25px",
                     "--sizeH": "10px",
                   } as React.CSSProperties
                 }
