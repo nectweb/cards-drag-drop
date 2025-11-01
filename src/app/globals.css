@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e3e3e3;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.layout {
+  position: relative;
+  background-color: #fff;
+  width: 100%;
+  max-width: 924px;
+  margin: auto;
+  min-height: 100vh;
+  display: block;
+}
+
+.react-grid-placeholder{
+  background-color: #333 !important;
+  border-radius: 10px;
+}
+
+.cards{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  border: 1px solid #e3e3e3;
+  padding: 20px 20px;
+  border-radius: 25px;
+  background-color: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  gap: 10px;
+  flex-wrap: wrap;
+  z-index: 10;
+}
+
+.cards img{
+  display: block;
+  width: 70px;
+  height: 70px;
+  border-radius: 30px;
+  object-fit: contain;
+  background-color: #fff;
+}
+
+.cards h2{
+  position: relative;
+  font-size: 17px;
+  display: block;
+  font-weight: 500;
+}
+
+.cards a{
+  position: relative;
+  font-size: 14px;
+  display: block;
+  font-weight: 500;
+  margin-top: auto;
+  background-color: var(--color);
+  color: #fff;
+  padding: 7px;
+  border-radius: 10px;
+}
+
+.cards .size-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: #000;
+  width: 90%;
+  max-width: 200px;
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 20;
+  opacity: 0;
+  transition: 0.4s all;
+  gap: 10px;
+}
+
+.cards:hover .size-container .btn-size{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  width: 50px;
+  height: 20px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.cards:hover .size-container button{
+  position: relative;
+  display: block;
+  width: var(--sizeW);
+  height: var(--sizeH);
+  border: 2px solid #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.cards:hover .size-container .active{
+  background-color: #fff;
+}
+
+.cards:hover .size-container .active button{
+  border-color: #000;
+}
+
+.cards .btn-trash{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 20;
+  opacity: 0;
+  transition: 0.4s all;
+  gap: 10px;
+}
+
+.cards .btn-trash:hover {
+  background-color: #f4f4f4;
+}
+
+.cards .btn-trash svg{
+  pointer-events: none;
+  color: #333;
+}
+
+.cards:hover .btn-trash,
+.cards:hover .size-container{
+  opacity: 1;
+}
