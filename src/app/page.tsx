@@ -4,7 +4,7 @@ import GridLayout, { Layout } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
 
 interface MyLayout extends Layout {
@@ -15,15 +15,13 @@ interface MyLayout extends Layout {
 }
 
 export default function Home() {
-  const lastX = useRef<number | null>(null);
-
   const initialLayout: MyLayout[] = [
     {
       i: "a",
       x: 0,
       y: 0,
       w: 0.933,
-      h: 1.66,
+      h: 1.71,
       img: "github.png",
       name: "Github",
       url: "https://github.com/dbrito1992",
@@ -34,7 +32,7 @@ export default function Home() {
       x: 1,
       y: 0,
       w: 0.933,
-      h: 1.66,
+      h: 1.71,
       img: "facebook.jpg",
       name: "Facebook",
       url: "https://facebook.com/nectweb",
@@ -45,7 +43,7 @@ export default function Home() {
       x: 2,
       y: 0,
       w: 0.933,
-      h: 1.66,
+      h: 1.71,
       img: "instagram.jpg",
       name: "Instagram",
       url: "https://instagram.com/nectweb",
@@ -56,7 +54,7 @@ export default function Home() {
       x: 3,
       y: 0,
       w: 0.933,
-      h: 1.66,
+      h: 1.71,
       img: "youtube.jpg",
       name: "Youtube",
       url: "https://youtube.com/@nectweb",
@@ -67,7 +65,7 @@ export default function Home() {
       x: 0,
       y: 2,
       w: 0.933,
-      h: 1.66,
+      h: 1.71,
       img: "xcom.jpg",
       name: "X.com",
       url: "https://x.com/nectweb",
@@ -78,7 +76,7 @@ export default function Home() {
       x: 1,
       y: 2,
       w: 0.933,
-      h: 1.66,
+      h: 1.71,
       img: "next-js.svg",
       name: "Next.js",
       url: "https://nextjs.org",
@@ -101,39 +99,16 @@ export default function Home() {
     setLayout((prev) => prev.filter((item) => item.i !== id));
   };
 
-   const handleDrag = (layout: Layout[], oldItem: Layout, newItem: Layout) => {
-    if (lastX.current !== null) {
-      if (newItem.x > lastX.current) {
-        console.log(`${newItem.i} movendo para a direita`);
-      } else if (newItem.x < lastX.current) {
-        console.log(`${newItem.i} movendo para a esquerda`);
-      }
-    }
-    lastX.current = newItem.x;
-  };
-
-  const handleDragStart = () => {
-    lastX.current = null; // reseta ao começar o drag
-  };
-
-  const handleDragStop = () => {
-    lastX.current = null; // reseta ao soltar o card
-  };
-
   return (
     <GridLayout
       className="layout"
       layout={layout}
-      margin={[34, 34]}
+      margin={[24, 24]}
+      width={924}
       cols={4}
       rowHeight={100}
       isResizable={false}
-      width={924}
-      isDraggable={true}
-      compactType="vertical"
-      onDrag={handleDrag}
-      onDragStart={handleDragStart}
-      onDragStop={handleDragStop}
+      draggableCancel=".btn-trash, a, button"
     >
       {layout.map((itens) => (
         <div
@@ -165,9 +140,8 @@ export default function Home() {
                     "--sizeH": "15px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 0.933, 1.66)}
+                onClick={() => handleSize(itens.i, 0.933, 1.71)}
               >
-                188X188
               </button>
             </div>
             <div className="btn-size">
@@ -178,9 +152,8 @@ export default function Home() {
                     "--sizeH": "20px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 0.933, 3.24)}
+                onClick={() => handleSize(itens.i, 0.933, 3.42)}
               >
-                188X400
               </button>
             </div>
             <div className="btn-size">
@@ -191,9 +164,8 @@ export default function Home() {
                     "--sizeH": "20px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 1.886, 1.66)}
+                onClick={() => handleSize(itens.i, 1.886, 1.71)}
               >
-                400x188
               </button>
             </div>
             <div className="btn-size">
@@ -204,7 +176,7 @@ export default function Home() {
                     "--sizeH": "25px",
                   } as React.CSSProperties
                 }
-                onClick={() => handleSize(itens.i, 1.886, 3.24)}
+                onClick={() => handleSize(itens.i, 1.886, 3.42)}
               >
                 400X400
               </button>
