@@ -32,7 +32,6 @@ body {
 }
 
 .cards{
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -46,6 +45,15 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   z-index: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none; 
+  -ms-user-select: none;
+  transition: 0.9s all; 
+}
+
+.cards:active{
+  cursor: grabbing;
 }
 
 .cards img{
@@ -115,6 +123,7 @@ body {
   border-radius: 3px;
   cursor: pointer;
   overflow: hidden;
+  
 }
 
 .cards:hover .size-container .active{
@@ -160,3 +169,45 @@ body {
   opacity: 1;
   z-index: 100000 !important;
 }
+
+.moving-left {
+  rotate: 2deg !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+  transition: 0.4s rotate ease-in-out !important;
+  transform-origin: center center !important;
+}
+
+.moving-right {
+  rotate: -2deg !important;
+  transition: 0.4s rotate ease-in-out !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+  transform-origin: center center !important;
+}
+
+.moving-reset {
+  rotate: 0deg !important;
+  transition: 0.4s rotate ease-in-out !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+  transform-origin: top center !important;
+}
+
+.moving-stop{
+  animation: balanco 0.4s;
+}
+
+@keyframes balanco {
+  from{
+    rotate: 1deg;
+  }
+  to{
+    rotate: -1deg;
+  }
+}
+
+/* @keyframes bounceOnce {
+  0%   {  transition: moving-left }
+  25%  { transform: rotate(-3deg); box-shadow: 0 6px 14px rgba(0,0,0,0.2); }
+  50%  { transform: rotate(3deg); box-shadow: 0 6px 14px rgba(0,0,0,0.2); }
+  75%  { transform: rotate(-2deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+  100% { transform: rotate(0deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+} */

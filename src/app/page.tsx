@@ -4,7 +4,7 @@ import GridLayout, { Layout } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
 
 interface MyLayout extends Layout {
@@ -83,21 +83,63 @@ export default function Home() {
       effectLeft: false,
     },
   ];
+
   const [layout, setLayout] = useState<MyLayout[]>(initialLayout);
+  const [movingDir, setMovingDir] = useState<string | null>(null);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const prevPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHeldStill, setIsHeldStill] = useState(false);
+  const dragTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleSize = (id: string, w: number, h: number) => {
     setLayout((prev) =>
-      prev.map((item) =>
-        item.i === id
-          ? { ...item, w: w, h: h } // aumenta tamanho
-          : item
-      )
+      prev.map((item) => (item.i === id ? { ...item, w: w, h: h } : item))
     );
   };
 
   const handleDelete = (id: string) => {
     setLayout((prev) => prev.filter((item) => item.i !== id));
   };
+
+  const handleDragStart = (layout: Layout[], oldItem: Layout) => {
+    setActiveItem(oldItem.i);
+    prevPos.current = { x: oldItem.x, y: oldItem.y };
+  };
+
+  const handleDrag = (layout: Layout[], oldItem: Layout, newItem: Layout) => {
+    setIsDragging(true);
+    setIsHeldStill(false);
+
+    const dx = newItem.x - prevPos.current.x;
+    const dy = newItem.y - prevPos.current.y;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      setMovingDir(dx > 0 ? "right" : "left");
+    }
+
+    // Se parar de mover por 200ms, considera "parado segurando"
+    if (dragTimeout.current) clearTimeout(dragTimeout.current);
+    dragTimeout.current = setTimeout(() => {
+      setIsHeldStill(true);
+    }, 10);
+
+    prevPos.current = { x: newItem.x, y: newItem.y };
+  };
+
+  const handleDragStop = () => {
+    setMovingDir("stop");
+    //setActiveItem(null);
+    setIsDragging(false);
+    setIsHeldStill(false);
+    if (dragTimeout.current) clearTimeout(dragTimeout.current);
+  };
+
+  console.log(isHeldStill)
+
+  useEffect(()=>{
+      if(isHeldStill === true) setMovingDir("reset");
+  }, [isHeldStill])
 
   return (
     <GridLayout
@@ -109,94 +151,112 @@ export default function Home() {
       rowHeight={100}
       isResizable={false}
       draggableCancel=".btn-trash, a, button"
+      onLayoutChange={(newLayout) =>
+        setLayout((prev) =>
+          prev.map((item) => {
+            const updated = newLayout.find((nl) => nl.i === item.i);
+            return updated
+              ? {
+                  ...item,
+                  x: updated.x,
+                  y: updated.y,
+                  w: updated.w,
+                  h: updated.h,
+                }
+              : item;
+          })
+        )
+      }
+      onDragStart={handleDragStart}
+      onDrag={handleDrag}
+      onDragStop={handleDragStop}
+      isBounded={true}
     >
-      {layout.map((itens) => (
-        <div
-          key={itens.i}
-          className="cards"
-        >
-          <button className="btn-trash" onClick={() => handleDelete(itens.i)}>
-            <FiTrash2 />
-          </button>
-          <Image
-            src={"/" + itens.img}
-            width={100}
-            height={100}
-            alt={itens.name}
-          />
-          <h2>{itens.name}</h2>
-          <a
-            href={itens.url}
-            style={{ "--color": "#010101" } as React.CSSProperties}
+      {layout.map((itens) => {
+        const isActive = activeItem === itens.i;
+        return (
+          <div
+            key={itens.i}
+            className={`cards ${
+              isActive && movingDir ? `moving-${movingDir}` : ""
+            }`}
           >
-            Seguir
-          </a>
-          <div className="size-container">
-            <div className="btn-size">
-              <button
-                style={
-                  {
-                    "--sizeW": "15px",
-                    "--sizeH": "15px",
-                  } as React.CSSProperties
-                }
-                onClick={() => handleSize(itens.i, 0.933, 1.71)}
-              >
-              </button>
-            </div>
-            <div className="btn-size">
-              <button
-                style={
-                  {
-                    "--sizeW": "10px",
-                    "--sizeH": "20px",
-                  } as React.CSSProperties
-                }
-                onClick={() => handleSize(itens.i, 0.933, 3.42)}
-              >
-              </button>
-            </div>
-            <div className="btn-size">
-              <button
-                style={
-                  {
-                    "--sizeW": "35px",
-                    "--sizeH": "20px",
-                  } as React.CSSProperties
-                }
-                onClick={() => handleSize(itens.i, 1.886, 1.71)}
-              >
-              </button>
-            </div>
-            <div className="btn-size">
-              <button
-                style={
-                  {
-                    "--sizeW": "25px",
-                    "--sizeH": "25px",
-                  } as React.CSSProperties
-                }
-                onClick={() => handleSize(itens.i, 1.886, 3.42)}
-              >
-                400X400
-              </button>
-            </div>
-            <div className="btn-size">
-              <button
-                style={
-                  {
-                    "--sizeW": "25px",
-                    "--sizeH": "10px",
-                  } as React.CSSProperties
-                }
-                onClick={() => handleSize(itens.i, 1.886, 0.82)}
-              >
-                4X2
-              </button>
+            <button className="btn-trash" onClick={() => handleDelete(itens.i)}>
+              <FiTrash2 />
+            </button>
+            <Image
+              src={"/" + itens.img}
+              width={100}
+              height={100}
+              alt={itens.name}
+            />
+            <h2>{itens.name}</h2>
+            <a
+              href={itens.url}
+              style={{ "--color": "#010101" } as React.CSSProperties}
+            >
+              Seguir
+            </a>
+            <div className="size-container">
+              <div className="btn-size">
+                <button
+                  style={
+                    {
+                      "--sizeW": "15px",
+                      "--sizeH": "15px",
+                    } as React.CSSProperties
+                  }
+                  onClick={() => handleSize(itens.i, 0.933, 1.71)}
+                ></button>
+              </div>
+              <div className="btn-size">
+                <button
+                  style={
+                    {
+                      "--sizeW": "10px",
+                      "--sizeH": "20px",
+                    } as React.CSSProperties
+                  }
+                  onClick={() => handleSize(itens.i, 0.933, 3.42)}
+                ></button>
+              </div>
+              <div className="btn-size">
+                <button
+                  style={
+                    {
+                      "--sizeW": "35px",
+                      "--sizeH": "20px",
+                    } as React.CSSProperties
+                  }
+                  onClick={() => handleSize(itens.i, 1.886, 1.71)}
+                ></button>
+              </div>
+              <div className="btn-size">
+                <button
+                  style={
+                    {
+                      "--sizeW": "25px",
+                      "--sizeH": "25px",
+                    } as React.CSSProperties
+                  }
+                  onClick={() => handleSize(itens.i, 1.886, 3.42)}
+                ></button>
+              </div>
+              <div className="btn-size">
+                <button
+                  style={
+                    {
+                      "--sizeW": "25px",
+                      "--sizeH": "10px",
+                    } as React.CSSProperties
+                  }
+                  onClick={() => handleSize(itens.i, 1.886, 0.82)}
+                ></button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </GridLayout>
   );
 }
