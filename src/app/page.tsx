@@ -122,7 +122,7 @@ export default function Home() {
     if (dragTimeout.current) clearTimeout(dragTimeout.current);
     dragTimeout.current = setTimeout(() => {
       setIsHeldStill(true);
-    }, 10);
+    }, 100);
 
     prevPos.current = { x: newItem.x, y: newItem.y };
   };
@@ -135,11 +135,9 @@ export default function Home() {
     if (dragTimeout.current) clearTimeout(dragTimeout.current);
   };
 
-  console.log(isHeldStill)
-
   useEffect(()=>{
       if(isHeldStill === true) setMovingDir("reset");
-  }, [isHeldStill])
+  }, [isHeldStill, isDragging])
 
   return (
     <GridLayout
