@@ -1,6 +1,5 @@
 "use client";
 import GridLayout, { Layout } from "react-grid-layout";
-
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import Image from "next/image";
@@ -16,72 +15,12 @@ interface MyLayout extends Layout {
 
 export default function Home() {
   const initialLayout: MyLayout[] = [
-    {
-      i: "a",
-      x: 0,
-      y: 0,
-      w: 0.933,
-      h: 1.71,
-      img: "github.png",
-      name: "Github",
-      url: "https://github.com/dbrito1992",
-      effectLeft: false,
-    },
-    {
-      i: "b",
-      x: 1,
-      y: 0,
-      w: 0.933,
-      h: 1.71,
-      img: "facebook.jpg",
-      name: "Facebook",
-      url: "https://facebook.com/nectweb",
-      effectLeft: false,
-    },
-    {
-      i: "c",
-      x: 2,
-      y: 0,
-      w: 0.933,
-      h: 1.71,
-      img: "instagram.jpg",
-      name: "Instagram",
-      url: "https://instagram.com/nectweb",
-      effectLeft: false,
-    },
-    {
-      i: "d",
-      x: 3,
-      y: 0,
-      w: 0.933,
-      h: 1.71,
-      img: "youtube.jpg",
-      name: "Youtube",
-      url: "https://youtube.com/@nectweb",
-      effectLeft: false,
-    },
-    {
-      i: "e",
-      x: 0,
-      y: 2,
-      w: 0.933,
-      h: 1.71,
-      img: "xcom.jpg",
-      name: "X.com",
-      url: "https://x.com/nectweb",
-      effectLeft: false,
-    },
-    {
-      i: "f",
-      x: 1,
-      y: 2,
-      w: 0.933,
-      h: 1.71,
-      img: "next-js.svg",
-      name: "Next.js",
-      url: "https://nextjs.org",
-      effectLeft: false,
-    },
+    { i: "a", x: 0, y: 0, w: 0.933, h: 1.71, img: "github.png", name: "Github", url: "https://github.com/dbrito1992", effectLeft: false },
+    { i: "b", x: 1, y: 0, w: 0.933, h: 1.71, img: "facebook.jpg", name: "Facebook", url: "https://facebook.com/nectweb", effectLeft: false },
+    { i: "c", x: 2, y: 0, w: 0.933, h: 1.71, img: "instagram.jpg", name: "Instagram", url: "https://instagram.com/nectweb", effectLeft: false },
+    { i: "d", x: 3, y: 0, w: 0.933, h: 1.71, img: "youtube.jpg", name: "Youtube", url: "https://youtube.com/@nectweb", effectLeft: false },
+    { i: "e", x: 0, y: 2, w: 0.933, h: 1.71, img: "xcom.jpg", name: "X.com", url: "https://x.com/nectweb", effectLeft: false },
+    { i: "f", x: 1, y: 2, w: 0.933, h: 1.71, img: "next-js.svg", name: "Next.js", url: "https://nextjs.org", effectLeft: false },
   ];
 
   const [layout, setLayout] = useState<MyLayout[]>(initialLayout);
@@ -93,9 +32,7 @@ export default function Home() {
   const dragTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleSize = (id: string, w: number, h: number) => {
-    setLayout((prev) =>
-      prev.map((item) => (item.i === id ? { ...item, w: w, h: h } : item))
-    );
+    setLayout((prev) => prev.map((item) => (item.i === id ? { ...item, w, h } : item)));
   };
 
   const handleDelete = (id: string) => {
@@ -114,30 +51,30 @@ export default function Home() {
     const dx = newItem.x - prevPos.current.x;
     const dy = newItem.y - prevPos.current.y;
 
+    // define a direção horizontal
     if (Math.abs(dx) > Math.abs(dy)) {
       setMovingDir(dx > 0 ? "right" : "left");
     }
 
-    // Se parar de mover por 200ms, considera "parado segurando"
+    // Se parar de mover por 100ms, considera "parado segurando"
     if (dragTimeout.current) clearTimeout(dragTimeout.current);
     dragTimeout.current = setTimeout(() => {
       setIsHeldStill(true);
-    }, 100);
+    }, 50);
 
     prevPos.current = { x: newItem.x, y: newItem.y };
   };
 
   const handleDragStop = () => {
     setMovingDir("stop");
-    //setActiveItem(null);
     setIsDragging(false);
     setIsHeldStill(false);
     if (dragTimeout.current) clearTimeout(dragTimeout.current);
   };
 
-  useEffect(()=>{
-      if(isHeldStill === true) setMovingDir("reset");
-  }, [isHeldStill, isDragging])
+  useEffect(() => {
+    if (isHeldStill) setMovingDir("reset");
+  }, [isHeldStill]);
 
   return (
     <GridLayout
@@ -153,15 +90,7 @@ export default function Home() {
         setLayout((prev) =>
           prev.map((item) => {
             const updated = newLayout.find((nl) => nl.i === item.i);
-            return updated
-              ? {
-                  ...item,
-                  x: updated.x,
-                  y: updated.y,
-                  w: updated.w,
-                  h: updated.h,
-                }
-              : item;
+            return updated ? { ...item, x: updated.x, y: updated.y, w: updated.w, h: updated.h } : item;
           })
         )
       }
@@ -173,83 +102,44 @@ export default function Home() {
       {layout.map((itens) => {
         const isActive = activeItem === itens.i;
         return (
-          <div
-            key={itens.i}
-            className={`cards ${
-              isActive && movingDir ? `moving-${movingDir}` : ""
-            }`}
-          >
-            <button className="btn-trash" onClick={() => handleDelete(itens.i)}>
-              <FiTrash2 />
-            </button>
-            <Image
-              src={"/" + itens.img}
-              width={100}
-              height={100}
-              alt={itens.name}
-            />
-            <h2>{itens.name}</h2>
-            <a
-              href={itens.url}
-              style={{ "--color": "#010101" } as React.CSSProperties}
+          <div key={itens.i} className="cards">
+            <div
+              className="card-inner"
+              style={{
+                transform:
+                  isActive && movingDir === "right"
+                    ? "rotate(-6deg)"
+                    : isActive && movingDir === "left"
+                    ? "rotate(6deg)"
+                    : "rotate(0deg)",
+                transformOrigin: "center center",
+                transition: isDragging ? "transform 0.3s ease" : "transform 0.3s ease",
+              }}
             >
-              Seguir
-            </a>
-            <div className="size-container">
-              <div className="btn-size">
-                <button
-                  style={
-                    {
-                      "--sizeW": "15px",
-                      "--sizeH": "15px",
-                    } as React.CSSProperties
-                  }
-                  onClick={() => handleSize(itens.i, 0.933, 1.71)}
-                ></button>
-              </div>
-              <div className="btn-size">
-                <button
-                  style={
-                    {
-                      "--sizeW": "10px",
-                      "--sizeH": "20px",
-                    } as React.CSSProperties
-                  }
-                  onClick={() => handleSize(itens.i, 0.933, 3.42)}
-                ></button>
-              </div>
-              <div className="btn-size">
-                <button
-                  style={
-                    {
-                      "--sizeW": "35px",
-                      "--sizeH": "20px",
-                    } as React.CSSProperties
-                  }
-                  onClick={() => handleSize(itens.i, 1.886, 1.71)}
-                ></button>
-              </div>
-              <div className="btn-size">
-                <button
-                  style={
-                    {
-                      "--sizeW": "25px",
-                      "--sizeH": "25px",
-                    } as React.CSSProperties
-                  }
-                  onClick={() => handleSize(itens.i, 1.886, 3.42)}
-                ></button>
-              </div>
-              <div className="btn-size">
-                <button
-                  style={
-                    {
-                      "--sizeW": "25px",
-                      "--sizeH": "10px",
-                    } as React.CSSProperties
-                  }
-                  onClick={() => handleSize(itens.i, 1.886, 0.82)}
-                ></button>
+              <button className="btn-trash" onClick={() => handleDelete(itens.i)}>
+                <FiTrash2 />
+              </button>
+              <Image src={"/" + itens.img} width={100} height={100} alt={itens.name} />
+              <h2>{itens.name}</h2>
+              <a href={itens.url} style={{ "--color": "#010101" } as React.CSSProperties}>
+                Seguir
+              </a>
+              <div className="size-container">
+                <div className="btn-size">
+                  <button style={{ "--sizeW": "15px", "--sizeH": "15px" } as React.CSSProperties} onClick={() => handleSize(itens.i, 0.933, 1.71)}></button>
+                </div>
+                <div className="btn-size">
+                  <button style={{ "--sizeW": "10px", "--sizeH": "20px" } as React.CSSProperties} onClick={() => handleSize(itens.i, 0.933, 3.42)}></button>
+                </div>
+                <div className="btn-size">
+                  <button style={{ "--sizeW": "35px", "--sizeH": "20px" } as React.CSSProperties} onClick={() => handleSize(itens.i, 1.886, 1.71)}></button>
+                </div>
+                <div className="btn-size">
+                  <button style={{ "--sizeW": "25px", "--sizeH": "25px" } as React.CSSProperties} onClick={() => handleSize(itens.i, 1.886, 3.42)}></button>
+                </div>
+                <div className="btn-size">
+                  <button style={{ "--sizeW": "25px", "--sizeH": "10px" } as React.CSSProperties} onClick={() => handleSize(itens.i, 1.886, 0.82)}></button>
+                </div>
               </div>
             </div>
           </div>
