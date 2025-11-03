@@ -28,7 +28,7 @@ body {
 
 .react-grid-placeholder {
   background-color: #333 !important;
-  border-radius: 10px;
+  border-radius: 28px;
 }
 
 .cards {
@@ -51,7 +51,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  border-radius: 25px;
+  border-radius: 28px;
   background-color: #fff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   border: 1px solid #e3e3e3;
